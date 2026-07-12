@@ -1,113 +1,43 @@
-\# 🌐 Universal Browser Agent
+# 🌐 Universal Browser Agent
 
+Universal Browser Agent is a Streamlit-based browser automation app that turns plain-language instructions into real web actions using an AI agent powered by browser-use and Playwright.
 
+It is designed for tasks such as scraping information, searching products, looking up documentation, and extracting financial data from websites.
 
-The \*\*Universal Browser Agent\*\* is an AI-powered automation dashboard that navigates web tasks using natural language prompts. It replaces fragile, hardcoded scraping scripts with an autonomous, self-healing agent that dynamically adapts to any website layout in real time.
+## ✨ What this project does
 
+- Accepts a natural-language task prompt from the user
+- Launches a browser automation agent to browse the web
+- Extracts and displays the result directly in the Streamlit UI
+- Supports sample prompts for common use cases
+- Uses environment variables to keep credentials secure
 
+## 🚀 Features
 
-Traditional automation scripts rely heavily on rigid HTML selectors, CSS classes, or XPaths, causing them to break instantly whenever a website modifies its design. This project resolves that fragility by pairing a clean Streamlit interface with the `browser-use` framework and Playwright, creating an agent that reads web pages semantically and executes multi-step browser tasks based entirely on simple natural language prompts.
+- Clean and simple Streamlit dashboard
+- Built-in example prompts for news, e-commerce, docs, and finance
+- Uses Playwright for browser automation
+- Uses browser-use for agent-based task execution
+- Supports .env-based configuration for API credentials
 
+## 🛠️ Tech Stack
 
+- Python
+- Streamlit
+- Playwright
+- browser-use
+- python-dotenv
 
-\---
+## 📁 Project Structure
 
-
-
-\## ⚙️ Application Workflow
-
-
-
-```text
-
-\[ User Prompt ] ---> ( Streamlit UI Dashboard )
-
-&#x20;                            │
-
-&#x20;                            ▼  \[ Triggers Button Click ]
-
-&#x20;                    ( Asyncio Event Loop )  <--- Prevents UI Freezing!
-
-&#x20;                            │
-
-&#x20;                            ▼  \[ Passes Instruction \& Sets use\_vision=False ]
-
-&#x20;                    ( browser-use AI Agent )
-
-&#x20;                            │
-
-&#x20;                            ▼  \[ Orchestrates Actions ]
-
-&#x20;                    ( Playwright Browser Core )
-
-&#x20;                            │
-
-&#x20;                            ▼  \[ Navigates, Clicks, Types via Text-DOM ]
-
-&#x20;                    ( Target Web Page / Portal )
-
-&#x20;                            │
-
-&#x20;                            ▼  \[ Fetches Final Automation Payload ]
-
-&#x20;                    ( Streamlit UI Output Terminal Screen )
-
-
-
-\## 🚀 Core Features
-
-
-
-\* \*\*Prompt-Driven Workflows:\*\* Translates simple instructions (e.g., \*"Go to Hacker News, read the top 3 stories, and output them as a list"\*) into sequential browser actions like clicking, typing, and navigating without human intervention.
-
-\* \*\*Text-DOM Optimization:\*\* Built with vision processing deactivated (`use\_vision=False`) to block heavy image uploads. This forces the model to interpret structural text-based DOM trees, drastically speeding up task execution while lowering network payload overhead.
-
-\* \*\*Isolated Asynchronous Loop:\*\* Spawns a dedicated background event loop (`asyncio`) upon execution, guaranteeing that intensive async browser processes run reliably without blocking or freezing Streamlit's rendering engine.
-
-\* \*\*Application-Focused UI:\*\* Injects custom CSS directly into the dashboard to remove distracting sidebars and toggle arrows, providing a clean, application-first single-page experience.
-
-
-
-
-
-\## ⚠️ Limitations
-
-
-
-\* \*\*No Multi-Modal Support:\*\* By forcing `use\_vision=False` to optimize speed and reduce data overhead, the agent cannot interact with image-only elements, canvas-based elements, complex graphical user interfaces, or CAPTCHAs that require visual solving.
-
-\* \*\*Strict Dependency on Structural DOM Text:\*\* Because the model relies entirely on parsing the text-based DOM tree, highly obfuscated HTML code, minified element structures, or heavy dynamically shifting layouts lacking clear text nodes can confuse the agent's semantic navigation path.
-
-\* \*\*Lack of Session Persistence:\*\* The agent initializes a clean, isolated browser instance on every script run via Playwright. It does not natively persist browser cookies, session states, local storage, or historical login states across distinct executions.
-
-\* \*\*Ollama Context Window Bounds:\*\* Large, dense web pages with massive structural DOM trees can generate significant text payloads. If a page's HTML footprint exceeds the token context window configuration of your remote cloud-hosted Ollama model profile, it can lead to truncated parsing or execution failures.
-
-\* \*\*Rate Limits and API Latency:\*\* Since the automation loop relies on synchronous block evaluation by the LLM step-by-step, any communication lag, network timeout, or rate-limiting on the remote hosting endpoint will directly cause the browser agent to pause or time out mid-task.
-
-
-
-\---
-
-
-
-\## 🛠️ Tech Stack
-
-
-
-\* \*\*UI Frontend:\*\* Streamlit
-
-\* \*\*Agentic Orchestration:\*\* `browser-use` 
-
-\* \*\*LLM Orchestration Layer:\*\* LangChain Core (`ChatOpenAI` wrapper)
-
-\* \*\*Browser Control Core:\*\* Playwright (Chromium Instance Management)
-
-\* \*\*Execution Runtime:\*\* Python `asyncio`
-
+- app.py - Main Streamlit application
+- requirements.txt - Python dependencies
+- .env.example - Example environment file
+- .gitignore - Ignores local secrets and virtual environment files
 
 ## 🧪 Sample Task Prompts
 
-You can use any of the following example prompts in the app:
+You can try these prompts in the app:
 
 1. Information Retrieval & Scraping
    - Go to https://news.ycombinator.com. Read the titles and points of the top 5 stories on the front page, format them as a clean bulleted list, and output them.
@@ -121,63 +51,57 @@ You can use any of the following example prompts in the app:
 4. Financial Data Extraction
    - Go to Yahoo Finance (https://finance.yahoo.com). Search for the ticker symbol "AAPL", find the current live stock price along with the percentage change for the day, and print it out.
 
-\## 📦 Installation \& Setup
+## ⚙️ Installation and Setup
 
+1. Clone the repository
 
+```bash
+git clone https://github.com/Prajyotsalunkhe/Universal-Browser-Agent.git
+cd Universal-Browser-Agent
+```
 
-1\. \*\*Clone the repository:\*\*
+2. Create and activate a virtual environment
 
-&#x20;  ```bash
+```bash
+python -m venv venv
+venv\Scripts\activate
+```
 
-&#x20;  git clone https://github.com/yourusername/universal-browser-agent.git
+3. Install dependencies
 
-&#x20;  cd universal-browser-agent
+```bash
+pip install -r requirements.txt
+```
 
-&#x20;  ```
+4. Install Playwright browser binaries
 
+```bash
+playwright install chromium
+```
 
+5. Configure environment variables
 
-2\. \*\*Install the required dependencies:\*\*
+Create a .env file in the project root using the example below:
 
-&#x20;  ```bash
+```env
+OLLAMA_API_KEY=your_ollama_api_key_here
+OLLAMA_MODEL=gpt-oss:120b
+```
 
-&#x20;  pip install streamlit browser-use playwright langchain-openai
+6. Run the app
 
-&#x20;  ```
+```bash
+streamlit run app.py
+```
 
+## ⚠️ Notes
 
+- This project depends on a valid Ollama API key and internet access.
+- Some websites may block or restrict automated browsing.
+- The app uses text-based DOM interaction and may not work well on sites that require visual interaction.
 
-3\. \*\*Install the Playwright browser binaries:\*\*
+## 📌 License
 
-&#x20;  ```bash
-
-&#x20;  playwright install chromium
-
-&#x20;  ```
-
-
-
-4\. \*\*Set up your environment credentials:\*\*
-
-&#x20;  ```bash
-
-&#x20;  export OLLAMA\_API\_KEY="your\_remote\_ollama\_api\_key"
-
-&#x20;  ```
-
-
-
-5\. \*\*Launch the Streamlit App:\*\*
-
-&#x20;  ```bash
-
-&#x20;  streamlit run app.py
-
-&#x20;  ```
-
-
-
-\---
-
+This project is for educational and personal automation use.
 
 
