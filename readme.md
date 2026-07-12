@@ -105,6 +105,21 @@ Traditional automation scripts rely heavily on rigid HTML selectors, CSS classes
 \* \*\*Execution Runtime:\*\* Python `asyncio`
 
 
+## 🧪 Sample Task Prompts
+
+You can use any of the following example prompts in the app:
+
+1. Information Retrieval & Scraping
+   - Go to https://news.ycombinator.com. Read the titles and points of the top 5 stories on the front page, format them as a clean bulleted list, and output them.
+
+2. E-Commerce Product Search
+   - Go to https://www.amazon.in. Search for "mechanical keyboard under 3000", find the first product listed that has a rating above 4 stars, and return its full name and exact price.
+
+3. Developer & Documentation Lookups
+   - Go to the official Streamlit documentation page (https://docs.streamlit.io). Search for "st.dataframe", read the first paragraph of the description, and summarize how to use it in one sentence.
+
+4. Financial Data Extraction
+   - Go to Yahoo Finance (https://finance.yahoo.com). Search for the ticker symbol "AAPL", find the current live stock price along with the percentage change for the day, and print it out.
 
 \## 📦 Installation \& Setup
 

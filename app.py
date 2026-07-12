@@ -1,6 +1,9 @@
 import streamlit as st
 import asyncio
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # CORE FIX: Import ChatOpenAI directly from browser_use, NOT from langchain
 from browser_use import Agent, ChatOpenAI
@@ -51,6 +54,36 @@ def main():
     st.title("Ollama Cloud Browser Automation Dashboard")
     st.caption("Direct cloud-hosted execution utilizing your remote OLLAMA_API_KEY credentials.")
 
+    sample_prompts = {
+        "Information Retrieval & Scraping": (
+            "Go to https://news.ycombinator.com. Read the titles and points of the top 5 stories on the front page, "
+            "format them as a clean bulleted list, and output them."
+        ),
+        "E-Commerce Product Search": (
+            "Go to https://www.amazon.in. Search for 'mechanical keyboard under 3000', find the first product listed "
+            "that has a rating above 4 stars, and return its full name and exact price."
+        ),
+        "Developer & Documentation Lookups": (
+            "Go to the official Streamlit documentation page (https://docs.streamlit.io). Search for 'st.dataframe', "
+            "read the first paragraph of the description, and summarize how to use it in one sentence."
+        ),
+        "Financial Data Extraction": (
+            "Go to Yahoo Finance (https://finance.yahoo.com). Search for the ticker symbol 'AAPL', find the current "
+            "live stock price along with the percentage change for the day, and print it out."
+        ),
+    }
+
+    if "task_input" not in st.session_state:
+        st.session_state.task_input = (
+            "Go to https://news.ycombinator.com. Read the titles of the top 3 stories on the front page "
+            "and output them clearly as a clean list."
+        )
+
+    st.subheader("Try a Sample Prompt")
+    selected_sample = st.selectbox("Choose an example", list(sample_prompts.keys()))
+    if st.button("Load sample prompt", use_container_width=True):
+        st.session_state.task_input = sample_prompts[selected_sample]
+
     # Sidebar parameters configuration
     st.sidebar.header(" Cloud Authentication")
     
@@ -59,7 +92,8 @@ def main():
     api_key = st.sidebar.text_input("Ollama API Key", value=default_key, type="password")
     
     # Enter your chosen hosted cloud profile model name (e.g., gpt-oss:120b)
-    model_name = st.sidebar.text_input("Ollama Cloud Model Profile", value="gpt-oss:120b")
+    default_model = os.environ.get("OLLAMA_MODEL", "gpt-oss:120b")
+    model_name = st.sidebar.text_input("Ollama Cloud Model Profile", value=default_model)
 
     if not api_key:
         st.sidebar.warning("⚠️ Provide your OLLAMA_API_KEY in the input slot to run tasks.")
@@ -67,14 +101,9 @@ def main():
     # Main dashboard interface
     st.subheader("Define Your Web Task")
     
-    test_prompt = (
-        "Go to https://news.ycombinator.com. Read the titles of the top 3 stories on the front page "
-        "and output them clearly as a clean list."
-    )
-    
     task_input = st.text_area(
-        "Task Prompt:", 
-        value=test_prompt,
+        "Task Prompt:",
+        key="task_input",
         height=120
     )
     
